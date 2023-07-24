@@ -4,11 +4,13 @@ import express from "express";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import refreshRoutes from "./routes/refresh.js";
+import logoutRoutes from "./routes/logout.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
 const app = express();
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(cookieParser());
 app.use(express.json());
 mongoose
@@ -23,3 +25,5 @@ mongoose
 
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/refresh", refreshRoutes);
+app.use("/logout", logoutRoutes);

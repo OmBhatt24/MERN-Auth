@@ -2,6 +2,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../app/index.js";
 
 const Login = () => {
   const [inputs, setinputs] = useState({
@@ -16,18 +18,21 @@ const Login = () => {
         email,
         password,
       });
-      let data = response.data;
-      console.log(data);
+      let data = await response.data;
+      // console.log(data);
       return data;
     } catch (error) {
       console.log(error);
     }
   };
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    sendRequest().then(() => {
-      history("/user");
-    });
+    sendRequest()
+      .then(dispatch(login()))
+      .then(() => {
+        history("/user");
+      });
   };
   const handleChange = (e) => {
     setinputs((prev) => {

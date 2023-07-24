@@ -37,10 +37,13 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "password is incorrect " });
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-      expiresIn: "1hr",
+      expiresIn: "40s",
     });
+    if (req.cookies[`${user._id}`]) req.cookies[`${user._id}`] = "";
+    // console.log("Generated Token after login:", token);
     res.cookie(user._id, token, {
       path: "/",
+      expiresIn: "30s",
       maxAge: 1000 * 60,
       httpOnly: true,
       sameSite: "lax",
@@ -50,4 +53,17 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
+};
+export const logout = (req, res) => {
+  const cookie = req.headers.cookie;
+  // console.log(cookie);
+  let [id, token] = cookie.split("=");
+
+  //   token = token.split(" ")[1];
+  if (token) {
+    let data = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    res.clearCookie(`${data.id}`);
+    req.cookies[`${data.id}`] = "";
+  }
+  res.status(200).json({ message: "loggedOut successfully!!" });
 };

@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -9,6 +10,7 @@
     "mongoose": "^7.3.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.0",
     "nodemon": "^2.0.22"
   },
   "name": "mern-auth",
@@ -17,7 +19,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon backend/app.js"
+    "start": "nodemon backend/app.js",
+    "both": "concurrently \"nodemon backend/app.js \" \"cd frontend && npm run dev\""
   },
   "author": "",
   "license": "ISC",
